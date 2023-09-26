@@ -14,11 +14,11 @@ int main()
         {
             if (r1 == r2)
             {
-                printf("The circles coincide");//совпадают
+                printf("The circles coincide");//sovpadayt
             }
             else
             {
-                printf("One of the circles lies inside the other");//один внутри другого
+                printf("One of the circles lies inside the other");//odin vnutry drugogo
             }
         }
         else
@@ -32,35 +32,35 @@ int main()
             else
             {
                 R = r2;
-                r = r1;//выбрали больший и меньший радиусы
+                r = r1;//vybrali max i min radiusy
             }
-            distance = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));//расстояние между центрами
+            distance = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));//rasstoyanie mezhdy centrami
             if (distance == r1 + r2)
             {
-                printf("Circles touch at one point outside");//внешнее касание
+                printf("Circles touch at one point outside");//vnechnee kasanie
             }
             else if (distance > r1 + r2)
             {
-                printf("Circles do not intersect");//не пересекаются
+                printf("Circles do not intersect");//ne peresecautca
             }
             else if ((distance < r1 + r2) && (distance > R - r))
             {
-                printf("Circles intersect in two points");// пересекаются в двух точках
+                printf("Circles intersect in two points");//peresecautca v dvyh tochkah
             }
             else if (distance < R - r)
             {
-                printf("One of the circles lies inside the other");//один внутри другого
+                printf("One of the circles lies inside the other");//pdin vnytry drygogo
             }
             else if (distance == R - r)
             {
-                printf("Circles touch at one point inside");//внутреннее касание
+                printf("Circles touch at one point inside");//kasanie vnutri
             }
 
         }
     }
     else
     {
-        printf("Incorrect data!"); // проверка на положительный радиус
+        printf("Incorrect data!"); //proverca na polozhitelny radius
     }
     return 0;
 }
