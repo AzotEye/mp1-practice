@@ -3,7 +3,7 @@
 #include <stdlib.h>
 int main()
 {
-    int n, i, j, num[6], guess[6], cows = 0, bulls = 0, att = 0;
+    int n, i, j, num[5], guess[5], cows = 0, bulls = 0, att = 0;
 
     do {
         printf("Input n: \n");
@@ -57,7 +57,8 @@ int main()
 
     printf("You won! Your attempts: %d.The number was:\n", att);
     for (i = 0; i < n; i++) {
-        printf("%d\n", num[i]);
+        printf("%d", num[i]);
     }
+    return 0;
  
 }
