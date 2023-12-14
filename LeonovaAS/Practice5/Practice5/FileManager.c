@@ -232,36 +232,53 @@ void sort_input(double* a, int n)
     }
 }
 
-void merge(double * a, int left, int mid, int right)
-{
-    int i1 = 0, i2 = 0, m, i = 0;
-    double *b = (double*)malloc(sizeof(double) * (right + 1));
+void merge(double* a, int left, int mid, int right) {
 
-    while (left + i1 < mid && mid + i2 < right)
+    int i1 = 0, i2 = 0, n;
+
+    double* f = (double*)malloc(sizeof(double) * (mid - left + 1));
+    double* s = (double*)malloc(sizeof(double) * (right - mid));
+
+
+    for (i1 = 0; i1 < mid - left + 1; i1++)
     {
-        if (a[left + i1] < a[mid + i2])
+        f[i1] = a[left + i1];
+    }
+
+    for (i2 = 0; i2 < right - mid; i2++)
+    {
+        s[i2] = a[mid + 1 + i2];
+    }
+
+    i1 = 0;
+    i2 = 0;
+    n = left;
+
+    while (i1 < mid - left + 1 && i2 < right - mid)
+    {
+        if (f[i1] <= s[i2])
         {
-            b[i] = a[mid + i1];
-            i1++;
-            i++;
+            a[n++] = f[i1++];
         }
         else
         {
-            b[i] = a[mid + i2];
-            i2++;
-            i++;
+            a[n++] = s[i2++];
         }
+
     }
-    while (left + i1 < mid)
+
+    while (i1 < mid - left + 1)
     {
-        b[i++] = a[mid + i2++];
+        a[n++] = f[i1++];
     }
-    m = i;
-    for (i = 0; i < m; i++)
+
+    while (i2 < right - mid)
     {
-        a[left + i] = b[i];
+        a[n++] = s[i2++];
     }
-    free(b);
+
+    free(f);
+    free(s);
 }
 
 void sort_merge(double* a, int left, int right)
