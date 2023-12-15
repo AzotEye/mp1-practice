@@ -7,17 +7,17 @@
 #include <stdint.h> 
 #include <inttypes.h>
 
-void sort_bubble(double *a, int n);
-void sort_choose(double *a, int n);
-void sort_input(double *a, int n);
+void sort_bubble(double *a, char* b, int n);
+void sort_choose(double *a, char* b, int n);
+void sort_input(double *a, char* b, int n);
 void sort_merge(double *a, int left, int right);
-void sort_fast(double *a, int n);
+void sort_fast(double *a, char* b, int n);
 
-void print(double *a, int n);
+int colvo_files(char * path);
 void merge(double *a, int left, int mid, int right);
 void swap(double *a, double *b);
-
-void get_sorted(double* a, int n);
+void swap_char(char* a, char* b);
+void get_sorted(double* a, char* b, int n);
 
 char* charconv(const char* str1);
 char* file_name(char* a, const char* b);
@@ -28,61 +28,74 @@ struct dirent* ent;
 
 int main()
 {
-    int i = 0, kolvo_files;
+    int i = 0, flag = 1, j;
     char path[255];
-    char* names[255];
-    double sizes[255];
+    char* names;
+    double* sizes;
 
     printf("Input path to the directory ");
     scanf("%s", &path);
-    
+
+    names = (char*)malloc(sizeof(char) * (colvo_files(path)));
+    sizes = (double*)malloc(sizeof(double) * (colvo_files(path)));
+
     dir = opendir(path);
+
     while ((ent = readdir(dir)) != false)
     {
        
        names[i] = charconv(ent->d_name);
        int64_t file_size = getFileSize(file_name(path, ent->d_name));
        sizes[i] = (double)file_size;
-       i++;   
-    }
+       i++;
+    }  
 
-    kolvo_files = i;
-    int flag = 1, j;
     do
     {
-        printf("\nDo you want to sort the files? ");
+        printf("Do you want to sort the files? ");
         scanf("%d", &flag);
+
         if (flag == 1)
         {
-            
-            double copy_of_sizes[255];
+            char* copy_of_names;
+            double* copy_of_sizes;
 
-            for (i = 0; i < kolvo_files; i++)
+            copy_of_names = (char*)malloc(sizeof(char) * (colvo_files(path)));
+            copy_of_sizes = (double*)malloc(sizeof(double) * (colvo_files(path)));
+            
+
+            for (i = 0; i < colvo_files(path); i++)
             {
                 copy_of_sizes[i] = sizes[i];
+                copy_of_names[i] = names[i];
+                printf("%s .... %lf", copy_of_names[i], copy_of_sizes[i]);
             }
-            get_sorted(copy_of_sizes, kolvo_files);
+            
+            get_sorted(copy_of_sizes, copy_of_names, colvo_files(path));
             printf("\nSorted:\n");
-            for (i = 0; i < kolvo_files; i++)
+
+            for (i = 0; i < colvo_files(path); i++)
             {
-                for (j = 0; j < kolvo_files; j++)
-                {
-                    if ((copy_of_sizes[i] == sizes[j]) && (sizes[j] != -1))
-                    {
-                        printf("%s ..... %lf\n", names[j], sizes[j]);
-                    }
-                }
+                printf("%s ..... %lf\n", &copy_of_names[i], &copy_of_sizes[i]);
+               
             }
+
             printf("\nUNsorted:\n");
-            for (i = 0; i < kolvo_files; i++)
+
+            for (i = 0; i < colvo_files(path); i++)
             {
                 if (sizes[i] != -1)
                     printf("%s ..... %lf\n", names[i], sizes[i]);
             }
+
+            free(copy_of_names);
+            free(copy_of_sizes);
         }
+
     } while (flag == 1);
     
-
+    free(names);
+    free(sizes);
     closedir(dir);
     return 0;
 }
@@ -101,6 +114,17 @@ int64_t getFileSize(const char* file_name) {
     return _file_size;
 }
 
+int colvo_files(char * path)
+{
+    int i = 0;
+    dir = opendir(path);
+    while ((ent = readdir(dir)) != false)
+    {
+        i++;
+    }
+    return i;
+}
+
 char* file_name(char* a, const char* b)
 {
     char* name = malloc((strlen(a) + strlen(b) + 2) * sizeof(char));
@@ -115,7 +139,7 @@ char* file_name(char* a, const char* b)
     
 }
 
-void get_sorted(double* a, int n)
+void get_sorted(double* a, char*b, int n)
 {
     time_t start, finish;
     int d = -1;
@@ -128,21 +152,21 @@ void get_sorted(double* a, int n)
     {
     case 1:
         start = time(NULL);
-        sort_bubble(a, n);
+        sort_bubble(a,b,n);
         finish = time(NULL);
         
         printf("\nTime of sorting: %lf\n", difftime(start, finish));
         break;
     case 2:
         start = time(NULL);
-        sort_choose(a, n);
+        sort_choose(a, b, n);
         finish = time(NULL);
         
         printf("\nTime of sorting: %lf\n", difftime(start, finish));
         break;
     case 3:
         start = time(NULL);
-        sort_input(a, n);
+        sort_input(a, b, n);
         finish = time(NULL);
         
         printf("\nTime of sorting: %lf\n", difftime(start, finish));
@@ -156,7 +180,7 @@ void get_sorted(double* a, int n)
         break;
     case 5:
         start = time(NULL);
-        sort_fast(a, n);
+        sort_fast(a, b, n);
         finish = time(NULL);
         
         printf("\nTime of sorting: %lf\n", difftime(start, finish));
@@ -164,15 +188,6 @@ void get_sorted(double* a, int n)
     }
 }
 
-void print(double* a, int n)
-{
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        printf("%lf ", a[i]);
-    }
-    printf("\n");
-}
 
 void swap(double* a, double* b)
 {
@@ -181,7 +196,14 @@ void swap(double* a, double* b)
     *b = t;
 }
 
-void sort_bubble(double* a, int n)
+void swap_char(char* a, char* b)
+{
+    char* t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void sort_bubble(double* a, char* b, int n)
 {
     int i, j;
     for (i = 0; i < n - 1; i++)
@@ -191,6 +213,7 @@ void sort_bubble(double* a, int n)
             if (a[j] > a[j + 1])
             {
                 swap(&a[j], &a[j + 1]);
+                swap_char(&b[j], &b[j + 1]);
 
             }
         }
@@ -198,7 +221,7 @@ void sort_bubble(double* a, int n)
     return;
 }
 
-void sort_choose(double* a, int n)
+void sort_choose(double* a, char* b, int n)
 {
     int i, j;
     double min;
@@ -210,12 +233,13 @@ void sort_choose(double* a, int n)
             if (a[j] < min)
             {
                 swap(&a[i], &a[j]);
+                swap(&b[i], &b[j]);
             }
         }
     }
 }
 
-void sort_input(double* a, int n)
+void sort_input(double* a, char* b, int n)
 {
     int i, j;
     double min;
@@ -226,6 +250,7 @@ void sort_input(double* a, int n)
         while (j >= 0 && a[j] > min)
         {
             a[j + 1] = a[j];
+            b[j + 1] = b[j];
             j--;
         }
         a[j + 1] = min;
@@ -292,7 +317,7 @@ void sort_merge(double* a, int left, int right)
     merge(a, left, (left + right) / 2, right);
 }
 
-void sort_fast(double* a, int n)
+void sort_fast(double* a, char* b, int n)
 {
     int i = 0, j = n - 1;
     double pivot = a[(n - 1) / 2];
@@ -309,17 +334,18 @@ void sort_fast(double* a, int n)
         if (i < j)
         {
             swap(&a[i], &a[j]);
+            swap_char(&b[i], &b[j]);
             i++;
             j--;
         }
     }
     if (j > 0)
     {
-        sort_fast(a, j);
+        sort_fast(a,b,j);
     }
     if (i > n - 1)
     {
-        sort_fast(&a[i], i);
+        sort_fast(&a[i], &b[i], i);
     }
 }
 
