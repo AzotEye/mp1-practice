@@ -5,7 +5,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdint.h> 
-#include <inttypes.h> 
+#include <inttypes.h>
 
 void sort_bubble(double *a, int n);
 void sort_choose(double *a, int n);

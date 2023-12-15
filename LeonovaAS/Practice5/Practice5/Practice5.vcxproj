@@ -130,7 +130,7 @@
     <ClCompile Include="FileManager.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D:\dirent-1.24\dirent-1.24\include\dirent.h" />
+    <ClInclude Include="dirent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
