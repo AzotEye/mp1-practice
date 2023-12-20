@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FileManager.c">
+    <ClCompile Include="Fles_sort.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
