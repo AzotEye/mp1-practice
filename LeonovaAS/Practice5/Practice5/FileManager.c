@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-//осталося сливка пж работай пж работай умолЙау
+
 DIR* dir;
 struct dirent* ent;
 
