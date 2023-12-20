@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include "dirent.h"
 #include <string.h>
 #include <time.h>
@@ -13,26 +13,26 @@ char* file_name(char* a, const char* b);
 int colvo_files(char* path);
 
 void get_sorted(long int* a, long int* a1, int* b, char** c, int n);
-void sort_bubble(long int*a,  int*b, int n);
+void sort_bubble(long int* a, int* b, int n);
 void sort_choose(long int* a, int* b, int n);
 void sort_input(long int* a, int* b, int n);
 void sort_merge(long int* a, int* b, int left, int right);
 void sort_quick(long int* a, int* b, int left, int right);
 
-void swap(long int*a, long int*b);
+void swap(long int* a, long int* b);
 void print_sorted(long int* a, int* b, char** c, int n);
 void print_original(long int* a, char** b, int n);
-void merge(long int* a, int * b, int left, int mid, int right);
+void merge(long int* a, int* b, int left, int mid, int right);
 
 int main()
 {
     struct stat fsize;
     char path[255], ** names;
     long int* sizes, * copy_sizes;
-    int *idx;
+    int* idx;
     int i = 0, colvo, j;
-    
-    
+
+
     printf("Input path to the directory: ");
     scanf("%s", path);
 
@@ -58,11 +58,11 @@ int main()
             i++;
         }
         closedir(dir);
-        
+
     }
 
     get_sorted(sizes, copy_sizes, idx, names, colvo);
-    
+
     free(idx);
     free(copy_sizes);
     free(sizes);
@@ -116,7 +116,7 @@ void get_sorted(long int* a, long int* a1, int* b, char** c, int n)
     int flag = 1, method = 0, i;
     while (flag == 1)
     {
-        
+
         printf("\nOriginal order:\n\n");
         print_original(a, c, n);
         printf("\nDo you want to sort these files?\n");
@@ -139,7 +139,7 @@ void get_sorted(long int* a, long int* a1, int* b, char** c, int n)
         {
             scanf("%d", &method);
         } while (method <= 0 || method >= 6);
-        
+
         switch (method)
         {
         case 1:
@@ -198,7 +198,7 @@ void sort_bubble(long int* a, int* b, int n)
                 swap(&b[j], &b[j + 1]);
             }
         }
-    }  
+    }
 }
 void sort_choose(long int* a, int* b, int n)
 {
@@ -219,17 +219,17 @@ void sort_input(long int* a, int* b, int n)
     for (i = 1; i < n; i++)
     {
         min = a[i];
-        
+
         j = i - 1;
         while (j >= 0 && a[j] > min)
         {
             a[j + 1] = a[j];
             swap(&b[j + 1], &b[j]);
-            
+
             j--;
         }
         a[j + 1] = min;
-        
+
     }
 }
 void sort_merge(long int* a, int* b, int left, int right)
@@ -307,7 +307,7 @@ void merge(long int* a, int* b, int left, int mid, int right)
     s = (long int*)malloc(sizeof(long int) * (right - mid));
     s1 = (int*)malloc(sizeof(int) * (right - mid));
 
-    
+
 
     for (i1 = 0; i1 < mid - left + 1; i1++)
     {
@@ -319,7 +319,7 @@ void merge(long int* a, int* b, int left, int mid, int right)
     {
         s[i2] = a[mid + 1 + i2];
         s1[i2] = b[mid + 1 + i2];
-        
+
     }
 
     i1 = 0;
@@ -330,16 +330,16 @@ void merge(long int* a, int* b, int left, int mid, int right)
     {
         if (f[i1] <= s[i2])
         {
-            
+
             b[n] = f1[i1];
             a[n++] = f[i1++];
-            
+
         }
         else
         {
             b[n] = s1[i2];
             a[n++] = s[i2++];
-            
+
         }
 
     }
@@ -348,14 +348,14 @@ void merge(long int* a, int* b, int left, int mid, int right)
     {
         b[n] = f1[i1];
         a[n++] = f[i1++];
-        
+
     }
 
     while (i2 < right - mid)
     {
         b[n] = s1[i2];
         a[n++] = s[i2++];
-        
+
     }
 
     free(f);
