@@ -48,12 +48,15 @@ int main()
     {
         while ((ent = readdir(dir)) != NULL)
         {
+            char* tmp;
             if (ent->d_type != DT_REG)
             {
                 continue;
             }
             names[i] = charconv(ent->d_name);
-            stat(file_name(path, ent->d_name), &(fsize));
+            tmp = file_name(path, ent->d_name);
+            stat(tmp, &(fsize));
+            free(tmp);
             sizes[i] = (long int)fsize.st_size;
             i++;
         }
@@ -66,6 +69,10 @@ int main()
     free(idx);
     free(copy_sizes);
     free(sizes);
+    for (i = 0; i < colvo; i++)
+    {
+        free(names[i]);
+    }
     free(names);
     return 0;
 }
@@ -145,40 +152,40 @@ void get_sorted(long int* a, long int* a1, int* b, char** c, int n)
         case 1:
             start = clock();
             sort_bubble(a1, b, n);
-            print_sorted(a1, b, c, n);
             end = clock();
+            print_sorted(a1, b, c, n);
             ttl = (double)((end - start)) / CLOCKS_PER_SEC;
             printf("\nTime of the sorting: %.5lf\n", ttl);
             break;
         case 2:
             start = clock();
             sort_input(a1, b, n);
-            print_sorted(a1, b, c, n);
             end = clock();
+            print_sorted(a1, b, c, n);
             ttl = (double)((end - start)) / CLOCKS_PER_SEC;
             printf("\nTime of the sorting: %.5lf\n", ttl);
             break;
         case 3:
             start = clock();
             sort_choose(a1, b, n);
-            print_sorted(a1, b, c, n);
             end = clock();
+            print_sorted(a1, b, c, n);
             ttl = (double)((end - start)) / CLOCKS_PER_SEC;
             printf("\nTime of the sorting: %.5lf\n", ttl);
             break;
         case 4:
             start = clock();
             sort_merge(a1, b, 0, n - 1, n);
-            print_sorted(a1, b, c, n);
             end = clock();
+            print_sorted(a1, b, c, n);
             ttl = (double)((end - start)) / CLOCKS_PER_SEC;
             printf("\nTime of the sorting: %.5lf\n", ttl);
             break;
         case 5:
             start = clock();
             sort_quick(a1, b, 0, n - 1);
-            print_sorted(a1, b, c, n);
             end = clock();
+            print_sorted(a1, b, c, n);
             ttl = (double)((end - start)) / CLOCKS_PER_SEC;
             printf("\nTime of the sorting: %.5lf\n", ttl);
             break;
