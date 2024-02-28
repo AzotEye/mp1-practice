@@ -1,5 +1,6 @@
 #include "TVector.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 
 void allo(Tvect* v, int n)
@@ -25,14 +26,39 @@ Tvect summ(Tvect* v1, Tvect* v2)
     }
     return sum;
 }
-void fill(Tvect* v)
+void fill(const char* filename, Tvect* v)
 {
     int i = 0;
-    printf("Cords = ");
-    for (i = 0; i < v->n; i++)
+    FILE* f = fopen(filename, "r");
+    if (f == NULL)
     {
-        scanf("%lf", &(v->x[i]));
+        printf("File not found");
+        abort();
     }
+    fscanf(f, "%d", &(v->n));
+    v->x = (double*)malloc(v->n * sizeof(double));
+    for (; i < v->n; i++)
+    {
+        fscanf(f, "%lf", &(v->x[i]));
+    }
+    fclose(f);
+}
+void write(const char* filename, Tvect* v)
+{
+    int i = 0;
+    FILE* f = fopen(filename, "w+");
+    if (f == NULL)
+    {
+        printf("File not found");
+        abort();
+    }
+    fprintf(f, "%d\n", v->n);
+    for (; i < v->n; i++)
+    {
+        fprintf(f, "%lf ", v->x[i]);
+    }
+    fprintf(f, "\n");
+    fclose(f);
 }
 void print(Tvect* v)
 {
